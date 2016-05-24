@@ -1,15 +1,37 @@
 'use strict';
 
-function collect_all_even(collection) {
-    var result = [];
+function thousands_separators(num) {
+    num = num + "";
+    num = num.replace(/[]/g,"");
 
-    collection.forEach(function (element) {
-        if (element % 2 === 0) {
-            result.push(element);
+    if(num == ""){
+        return;
+    }
+
+    if(isNaN(num)){
+        return;
+    }
+
+    var index = num.indexOf('.');
+    if(index == -1){
+        var reg = /(-?\d+)(\d{3})/;
+
+        while(reg.test(num)){
+            num = num.replace(reg,"$1,$2");
         }
-    });
+    }else{
+        var intPart = num.substring(0, index);
+        var decimalPart = num.substring(index+1, num.length);
+        var reg = /(-?\d+)(\d{3})/;
 
-    return result;
+        while(reg.test(intPart)){
+            intPart = intPart.replace(reg, "$1,$2");
+        }
+        num = intPart + "." + decimalPart;
+    }
+
+    return num;
 }
 
-module.exports = collect_all_even;
+
+module.exports = thousands_separators;
